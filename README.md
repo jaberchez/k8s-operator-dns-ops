@@ -8,6 +8,9 @@ In this example [PowerDNS](https://doc.powerdns.com/) is used because it provide
 
 ## Testing
 To test the operator an OpenShift 4.x environment is preferred because you can scale Nodes via MachineSet
+```bash
+oc scale machineset machineset-name -n openshift-machine-api --replicas 2
+```
 
 ## Download and Install Operator SDK
 
@@ -45,7 +48,7 @@ sudo podman build -t quay.io/jberchez-redhat/k8s-operator-dns-ops:v1.0 .
 
 ## Push the docker image into the registry
 ```bash
-podman push quay.io/jberchez-redhat/k8s-operator-dns-ops:v1.0
+sudo podman push quay.io/jberchez-redhat/k8s-operator-dns-ops:v1.0
 ```
 
 ## Deploy Operator
