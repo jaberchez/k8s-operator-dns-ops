@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: k8s-operator-dns-ops
+  namespace: k8s-operator-dns-ops
+
+  labels:
+    app: k8s-operator-dns-ops
+
+spec:
+  selector:
+    matchLabels:
+      app: k8s-operator-dns-ops
+
+  template:
+    metadata:
+      labels:
+        app: k8s-operator-dns-ops
+
+    spec:
+      serviceAccountName: k8s-operator-dns-ops
+
+      containers:
+      - name: k8s-operator-dns-ops
+        image: quay.io/jberchez-redhat/k8s-operator-dns-ops:v1.0
+
+        env:
+          - name: DNS_TYPE
+            value: "PowerDNS"
+
+          - name: POWERDNS_SERVER
+            value: "http://powerdns.powerdns.svc:8081"
+
+          - name: POWERDNS_KEY
+            value: "test123"
+
+        # oc adm policy add-scc-to-user anyuid -z powerdns
+        #securityContext:
+          #allowPrivilegeEscalation: false
+        #  runAsUser: 0
+

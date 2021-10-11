@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: powerdns
+  namespace: powerdns
+
+  labels:
+    app: powerdns
+
+spec:
+  selector:
+    matchLabels:
+      app: powerdns
+
+  template:
+    metadata:
+      labels:
+        app: powerdns
+
+    spec:
+      serviceAccountName: powerdns
+
+      containers:
+      - name: powerdns
+        image: psitrax/powerdns:4
+        args:
+          - --api=yes
+          - --api-key=test123
+          - --webserver=no
+          - --webserver-address=0.0.0.0
+          - --webserver-allow-from=0.0.0.0/0
+
+        envFrom:
+          - secretRef:
+              name: envs
+
+        # oc adm policy add-scc-to-user anyuid -z powerdns
+        securityContext:
+          #allowPrivilegeEscalation: false
+          runAsUser: 0
+
+      #  volumeMounts:
+      #    - mountPath: /etc/pdns
+      #      name: data
+      #volumes:
+      #  - name: data
+      #    emptyDir: {}

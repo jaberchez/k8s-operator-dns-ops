@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: powerdns-webui
+  namespace: powerdns
+
+  labels:
+    app: powerdns
+
+spec:
+  selector:
+    matchLabels:
+      app: powerdns-webui
+
+  template:
+    metadata:
+      labels:
+        app: powerdns-webui
+
+    spec:
+      serviceAccountName: powerdns-webui
+
+      containers:
+      - name: powerdns-webui
+        image: jamesstevens/pdns-webui
+
+        envFrom:
+          - secretRef:
+              name: envs
