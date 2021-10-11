@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: powerdns-webui
+  namespace: powerdns
+
+  labels:
+    app: powerdns-webui
+
+spec:
+  ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 443
+
+  selector:
+    app: powerdns-webui
+
+# Create new user in /etc/nginx/htpasswd
+# htpasswd  -nbm test test123
+# oc rsh powerdns-webui-xxxxx sh
+# Add new user in /etc/nginx/htpasswd

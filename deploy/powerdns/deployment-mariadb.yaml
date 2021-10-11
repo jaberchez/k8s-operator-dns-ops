@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: mariadb
+  namespace: powerdns
+
+  labels:
+    app: mariadb
+
+spec:
+  selector:
+    matchLabels:
+      app: mariadb
+
+  template:
+    metadata:
+      labels:
+        app: mariadb
+
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:10.1
+
+        envFrom:
+          - secretRef:
+              name: envs
+
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: data
+      volumes:
+        - name: data
+          emptyDir: {}
+
+              
